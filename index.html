@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>USD/GBP historical exchange rates analytics - using ZoomCharts and Agile Data</title>
+    <script src="http://cdn.zoomcharts-cloud.com/1/latest/zoomcharts.js"></script>
+</head>
+<body>
+    <h1>ZoomCharts integration with Mysql using PHP and Mysqli</h1>
+    <h2>Example: USD/GBP exchange rates analytics</h2>
+    <p>
+        View source: <a href="https://github.com/zoomcharts/mysql-service">GitHub</a><br/>
+        Learn more about the libraries:<br/>
+        <a href="https://zoomcharts.com">ZoomCharts</a><br />
+        </p>
+    <p>Hint: click/swipe/pinch chart to explore the rates</p>
+<div id="demo"></div>
+<script>
+    var t = new TimeChart({
+        container: document.getElementById("demo"),
+        title: {
+            text: "USD/GBP exchange rates"
+        },
+        data:
+        {
+            units:["y","m","d"],
+            url: "service.php",
+        },
+        series:
+        [
+            {
+                id: "bid",
+                data: {index: 1, aggregation: "min"},
+                name: "bid",
+                type: "line",
+                style: {lineColor: "limegreen", lineWidth: 2, smoothing: true,
+                    marker: {shape: "circle", width: 5}}
+            },
+            {
+                id: "ask",
+                data: {index: 2, aggregation: "max"},
+                name: "ask",
+                type: "line",
+                style: {lineColor: "red", lineWidth: 2, smoothing: true,
+                    marker: {shape: "circle", width: 5}}
+            }
+        ],
+        valueAxisDefault: {
+            zeroLine: "floating",
+            scaleAdjustmentTolerance: 0.2
+        },
+        info: {
+            valueFormatterFunction: function(val, s){
+                if (s.id == "bid"){
+                    return val ? (val.min.toFixed(4)) : "No data";
+                } else {
+                    return val ? (val.max.toFixed(4)) : "No data";
+                }
+            }
+        },
+        area: {
+            displayUnits: [
+                {unit: "1 y", name: "year"},
+                {unit: "1 M", name: "month"},
+                {unit: "1 d", name: "day"}
+            ]
+        },
+        milestones: [
+            {
+                label: {
+                    text: "Referendum"
+                },
+                time: 1466596800000
+            }
+        ]
+    });
+</script>
